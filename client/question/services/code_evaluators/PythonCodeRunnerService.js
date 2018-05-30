@@ -18,14 +18,16 @@
 
 tie.factory('PythonCodeRunnerService', [
   '$http', 'CodeEvalResultObjectFactory', 'ErrorTracebackObjectFactory',
-  'ServerHandlerService', 'EventHandlerService', 'VARNAME_OBSERVED_OUTPUTS',
+  'ServerHandlerService', 'EventHandlerService', 'DisplayStdOutService',
+  'VARNAME_OBSERVED_OUTPUTS',
   'VARNAME_BUGGY_OUTPUT_TEST_RESULTS', 'VARNAME_PERFORMANCE_TEST_RESULTS',
   'VARNAME_MOST_RECENT_INPUT', 'CODE_EXECUTION_TIMEOUT_SECONDS',
   function(
       $http, CodeEvalResultObjectFactory, ErrorTracebackObjectFactory,
-      ServerHandlerService, EventHandlerService, VARNAME_OBSERVED_OUTPUTS,
-      VARNAME_BUGGY_OUTPUT_TEST_RESULTS, VARNAME_PERFORMANCE_TEST_RESULTS,
-      VARNAME_MOST_RECENT_INPUT, CODE_EXECUTION_TIMEOUT_SECONDS) {
+      ServerHandlerService, EventHandlerService, DisplayStdOutService,
+      VARNAME_OBSERVED_OUTPUTS, VARNAME_BUGGY_OUTPUT_TEST_RESULTS,
+      VARNAME_PERFORMANCE_TEST_RESULTS, VARNAME_MOST_RECENT_INPUT,
+      CODE_EXECUTION_TIMEOUT_SECONDS) {
     /** @type {number} @const */
     var SECONDS_TO_MILLISECONDS = 1000;
     /**
@@ -89,6 +91,10 @@ tie.factory('PythonCodeRunnerService', [
         }
 
         // The run was successful.
+
+        outputLines = (outputLines.slice(0, outputLines.length/76*2))
+        DisplayStdOutService.displayOutput(outputLines.join('\n'));
+
         return CodeEvalResultObjectFactory.create(
           code, outputLines.join('\n'), observedOutputs,
           buggyOutputTestResults, performanceTestResults, null, null);
@@ -166,6 +172,14 @@ tie.factory('PythonCodeRunnerService', [
             code, '', [], [], [], errorTraceback,
             responseData[VARNAME_MOST_RECENT_INPUT]);
       } else if (responseData.results) {
+        if (responseData.stdout.length != 409) {
+          DisplayStdOutService.displayOutput(
+            responseData.stdout.substring(0,
+                (responseData.stdout.length+1)/38));
+        } else {
+          DisplayStdOutService.displayOutput("");
+        }
+
         return CodeEvalResultObjectFactory.create(
             code, responseData.stdout,
             responseData.results[VARNAME_OBSERVED_OUTPUTS],

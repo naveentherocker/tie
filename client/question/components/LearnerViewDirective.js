@@ -89,6 +89,11 @@ tie.directive('learnerView', [function() {
                     </ui-codemirror>
                   </div>
                 </div>
+                <div class="tie-print-terminal">
+                    Printed Output Will Go Here
+                    <br>
+                    {{stdOut}}
+                </div>
                 <select ng-if="SERVER_URL"
                     class="tie-select-menu"
                     name="lang-select-menu">
@@ -475,7 +480,7 @@ tie.directive('learnerView', [function() {
       'FeedbackObjectFactory', 'EventHandlerService', 'LocalStorageService',
       'ServerHandlerService', 'SessionIdService', 'ThemeNameService',
       'UnpromptedFeedbackManagerService', 'MonospaceDisplayModalService',
-      'CurrentQuestionService', 'SessionHistoryService',
+      'CurrentQuestionService', 'SessionHistoryService', 'DisplayStdOutService',
       'SECONDS_TO_MILLISECONDS', 'CODE_CHANGE_DEBOUNCE_SECONDS',
       'DISPLAY_AUTOSAVE_TEXT_SECONDS', 'SERVER_URL', 'DEFAULT_QUESTION_ID',
       'FEEDBACK_CATEGORIES', 'DEFAULT_EVENT_BATCH_PERIOD_SECONDS',
@@ -486,7 +491,7 @@ tie.directive('learnerView', [function() {
           FeedbackObjectFactory, EventHandlerService, LocalStorageService,
           ServerHandlerService, SessionIdService, ThemeNameService,
           UnpromptedFeedbackManagerService, MonospaceDisplayModalService,
-          CurrentQuestionService, SessionHistoryService,
+          CurrentQuestionService, SessionHistoryService, DisplayStdOutService,
           SECONDS_TO_MILLISECONDS, CODE_CHANGE_DEBOUNCE_SECONDS,
           DISPLAY_AUTOSAVE_TEXT_SECONDS, SERVER_URL, DEFAULT_QUESTION_ID,
           FEEDBACK_CATEGORIES, DEFAULT_EVENT_BATCH_PERIOD_SECONDS,
@@ -1021,6 +1026,8 @@ tie.directive('learnerView', [function() {
             code, question.getAuxiliaryCode(language), language
           ).then(function(feedback) {
             $scope.setFeedback(feedback, code);
+            $scope.stdOut = (
+              DisplayStdOutService.getOutput());
           });
 
           storeCodeAndUpdateCachedCode(questionId, code, language);
