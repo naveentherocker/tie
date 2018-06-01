@@ -92,7 +92,7 @@ tie.factory('PythonCodeRunnerService', [
 
         // The run was successful.
 
-        outputLines = (outputLines.slice(0, outputLines.length/76*2))
+        outputLines = (outputLines.slice(0, outputLines.length/38))
         DisplayStdOutService.displayOutput(outputLines.join('\n'));
 
         return CodeEvalResultObjectFactory.create(

@@ -70,29 +70,30 @@ tie.directive('learnerView', [function() {
             </div>
             <div class="tie-coding-ui">
               <div class="tie-lang-terminal">
-                <div class="tie-coding-terminal">
-                  <div class="tie-codemirror-container"
-                      tabindex="0"
-                      ng-keypress="onKeypressCodemirrorContainer($event)"
-                      ng-focus="onFocusCodemirrorContainer()">
-                    <ui-codemirror ui-codemirror-opts="codeMirrorOptions"
-                        ng-model="editorContents.code"
-                        ng-change="onCodeChange()"
-                        ng-if="!accessibleMode"
-                        class="protractor-test-code-input">
-                    </ui-codemirror>
-                    <ui-codemirror ng-model="editorContents.code"
-                        ui-codemirror-opts="accessibleCodeMirrorOptions"
-                        ng-change="onCodeChange()"
-                        ng-if="accessibleMode"
-                        class="protractor-test-code-input">
-                    </ui-codemirror>
+                <div class="tie-user-terminal">
+                  <div class="tie-coding-terminal">
+                    <div class="tie-codemirror-container"
+                        tabindex="0"
+                        ng-keypress="onKeypressCodemirrorContainer($event)"
+                        ng-focus="onFocusCodemirrorContainer()">
+                      <ui-codemirror ui-codemirror-opts="codeMirrorOptions"
+                          ng-model="editorContents.code"
+                          ng-change="onCodeChange()"
+                          ng-if="!accessibleMode"
+                          class="protractor-test-code-input">
+                      </ui-codemirror>
+                      <ui-codemirror ng-model="editorContents.code"
+                          ui-codemirror-opts="accessibleCodeMirrorOptions"
+                          ng-change="onCodeChange()"
+                          ng-if="accessibleMode"
+                          class="protractor-test-code-input">
+                      </ui-codemirror>
+                    </div>
                   </div>
-                </div>
-                <div class="tie-print-terminal">
-                    Printed Output Will Go Here
-                    <br>
-                    {{stdOut}}
+                  <hr />
+                  <div class="tie-print-terminal">
+                  <h2 class="tie-print-title"> Printed Output </h2>{{stdOut}}
+                  </div>
                 </div>
                 <select ng-if="SERVER_URL"
                     class="tie-select-menu"
@@ -259,7 +260,7 @@ tie.directive('learnerView', [function() {
         }
         .tie-coding-terminal .CodeMirror {
           /* Overwriting codemirror defaults */
-          height: 100%;
+          height: 101%;
         }
         .tie-codemirror-container {
           width: 100%;
@@ -267,7 +268,7 @@ tie.directive('learnerView', [function() {
         .tie-coding-terminal {
           display: flex;
           font-size: 13px;
-          height: 528px;
+          height: 338px;
           position: relative;
           width: 662px;
         }
@@ -286,6 +287,25 @@ tie.directive('learnerView', [function() {
           display: inline-block;
           margin: 8px;
           white-space: normal;
+        }
+        .tie-user-terminal {
+          background-color: rgb(255, 255, 255);
+          height: 528px;
+          position: relative;
+        }
+        .tie-print-title{
+          text-align: center;
+          color: #212121;
+          font-size: 18px;
+        }
+        .tie-print-terminal {
+          white-space: pre-wrap;
+          padding-left: 8%;
+          line-height: 65%;
+          overflow: auto;
+          height: 176px;
+          font-size: 14px;
+          background-color: #FFFFF7;
         }
         .tie-feedback-error-string {
           color: #F44336;
