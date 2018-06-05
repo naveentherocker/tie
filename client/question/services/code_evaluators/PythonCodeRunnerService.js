@@ -91,7 +91,6 @@ tie.factory('PythonCodeRunnerService', [
         }
 
         // The run was successful.
-        // outputLines = (outputLines.slice(0, outputLines.length / 38));
         // Duplicate handling to be implemented here.
         DisplayStdOutService.displayOutput(outputLines.join('\n'));
 
@@ -172,15 +171,8 @@ tie.factory('PythonCodeRunnerService', [
             code, '', [], [], [], errorTraceback,
             responseData[VARNAME_MOST_RECENT_INPUT]);
       } else if (responseData.results) {
-        // if (responseData.stdout.length !== 409) {
-        //   DisplayStdOutService.displayOutput(
-        //     responseData.stdout.substring(0,
-        //         (responseData.stdout.length +1 ) / 38));
         // New stdout handling will go here.
           DisplayStdOutService.displayOutput('to be implemented');
-        // } else {
-        //   DisplayStdOutService.displayOutput("");
-        // }
 
         return CodeEvalResultObjectFactory.create(
             code, responseData.stdout,
