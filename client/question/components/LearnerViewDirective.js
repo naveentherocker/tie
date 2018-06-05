@@ -295,17 +295,19 @@ tie.directive('learnerView', [function() {
         }
         .tie-print-title{
           text-align: center;
-          color: #212121;
+          color: #ffffff;
           font-size: 18px;
         }
         .tie-print-terminal {
           white-space: pre-wrap;
           padding-left: 8%;
-          line-height: 65%;
+          line-height: 48%;
           overflow: auto;
           height: 176px;
           font-size: 14px;
-          background-color: #FFFFF7;
+          color: #ffffff;
+          background-color: #2c2f35;
+          font-family: monospace;
         }
         .tie-feedback-error-string {
           color: #F44336;
