@@ -172,7 +172,7 @@ tie.factory('PythonCodeRunnerService', [
             responseData[VARNAME_MOST_RECENT_INPUT]);
       } else if (responseData.results) {
         // New stdout handling will go here.
-          DisplayStdOutService.displayOutput('to be implemented');
+        DisplayStdOutService.displayOutput('to be implemented');
 
         return CodeEvalResultObjectFactory.create(
             code, responseData.stdout,
