@@ -251,6 +251,7 @@ tie.constant('SYSTEM_CODE', {
     '        global most_recent_input',
     '        most_recent_input = copy.deepcopy(input)',
     '        output = func(input)',
+    '        print separator',
     '        return output',
     '',
     '    @classmethod',
