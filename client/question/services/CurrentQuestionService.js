@@ -26,13 +26,13 @@ tie.factory('CurrentQuestionService', [
     // TODO(eyurko): Return correct question version, once implemented.
     var questionVersion = 1;
     var cachedQuestion = null;
-
+    
     return {
       init: function(successCallback) {
         var that = this;
 
         var questionPromise = QuestionDataService.fetchQuestionAsync(
-          questionId);
+          "checkBalancedParentheses");
         questionPromise.then(function(question) {
           if (question) {
             cachedQuestion = question;

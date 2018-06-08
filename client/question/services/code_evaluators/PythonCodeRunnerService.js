@@ -19,12 +19,14 @@
 tie.factory('PythonCodeRunnerService', [
   '$http', 'CodeEvalResultObjectFactory', 'ErrorTracebackObjectFactory',
   'ServerHandlerService', 'EventHandlerService', 'DisplayStdOutService',
+  'CurrentQuestionService', 'StdOutSeparatorService',
   'VARNAME_OBSERVED_OUTPUTS',
   'VARNAME_BUGGY_OUTPUT_TEST_RESULTS', 'VARNAME_PERFORMANCE_TEST_RESULTS',
   'VARNAME_MOST_RECENT_INPUT', 'CODE_EXECUTION_TIMEOUT_SECONDS',
   function(
       $http, CodeEvalResultObjectFactory, ErrorTracebackObjectFactory,
       ServerHandlerService, EventHandlerService, DisplayStdOutService,
+      CurrentQuestionService, StdOutSeparatorService,
       VARNAME_OBSERVED_OUTPUTS, VARNAME_BUGGY_OUTPUT_TEST_RESULTS,
       VARNAME_PERFORMANCE_TEST_RESULTS, VARNAME_MOST_RECENT_INPUT,
       CODE_EXECUTION_TIMEOUT_SECONDS) {
@@ -91,12 +93,17 @@ tie.factory('PythonCodeRunnerService', [
         }
 
         // The run was successful.
-        // Duplicate handling to be implemented here.
-        DisplayStdOutService.displayOutput(outputLines.join('\n'));
-
-        return CodeEvalResultObjectFactory.create(
+        var question = CurrentQuestionService.getCurrentQuestion();
+        var tasks = question.getTasks();
+        var codeEvalResult = CodeEvalResultObjectFactory.create(
           code, outputLines.join('\n'), observedOutputs,
           buggyOutputTestResults, performanceTestResults, null, null);
+        var testToDisplay = codeEvalResult.getIndexOfFirstFailedTest(tasks);
+        outputLines = StdOutSeparatorService.getTestCaseOutputInClient(
+          outputLines, testToDisplay);
+        DisplayStdOutService.displayOutput(outputLines.join('\n'));
+
+        return codeEvalResult;
       }, function(skulptError) {
         var errorInput = null;
         if (Sk.globals.hasOwnProperty(VARNAME_MOST_RECENT_INPUT)) {
@@ -171,15 +178,20 @@ tie.factory('PythonCodeRunnerService', [
             code, '', [], [], [], errorTraceback,
             responseData[VARNAME_MOST_RECENT_INPUT]);
       } else if (responseData.results) {
-        // New stdout handling will go here.
-        DisplayStdOutService.displayOutput('to be implemented');
+        var question = CurrentQuestionService.getCurrentQuestion();
+        var tasks = question.getTasks();
+        var codeEvalResult = CodeEvalResultObjectFactory.create(
+           code, responseData.stdout,
+           responseData.results[VARNAME_OBSERVED_OUTPUTS],
+           responseData.results[VARNAME_BUGGY_OUTPUT_TEST_RESULTS],
+           responseData.results[VARNAME_PERFORMANCE_TEST_RESULTS],
+           null, null);
+        var testToDisplay = codeEvalResult.getIndexOfFirstFailedTest(tasks);
+        var stdoutToDisplay = StdOutSeparatorService.getTestCaseOutput(
+         responseData.stdout, testToDisplay);
+        DisplayStdOutService.displayOutput(stdoutToDisplay);
 
-        return CodeEvalResultObjectFactory.create(
-            code, responseData.stdout,
-            responseData.results[VARNAME_OBSERVED_OUTPUTS],
-            responseData.results[VARNAME_BUGGY_OUTPUT_TEST_RESULTS],
-            responseData.results[VARNAME_PERFORMANCE_TEST_RESULTS],
-            null, null);
+        return codeEvalResult;
       } else {
         throw Error('A server error occurred. Please try again.');
       }

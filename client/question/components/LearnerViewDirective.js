@@ -308,6 +308,7 @@ tie.directive('learnerView', [function() {
           color: #ffffff;
           background-color: #2c2f35;
           font-family: monospace;
+          width: 610px;
         }
         .tie-feedback-error-string {
           color: #F44336;

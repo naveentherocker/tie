@@ -42,6 +42,71 @@ tie.factory('StdOutSeparatorService', [
       */
       getSeparator: function() {
         return separator;
+      },
+
+      /**
+      * Returns the corresponding stdOut for the given test case number for
+      * client version.
+      *
+      * @param {Array} stdOut Array of entire stdOut for all test cases.
+      * @param {number} testNum Test case number of desired stdOut.
+      * @returns {string}
+      */
+      getTestCaseOutputInClient: function(stdOut, testNum) {
+        if (stdOut.length < 1 || stdOut[0] === separator) {
+          return [];
+        }
+        var startIndex = 0;
+        var endIndex = 0;
+        var separatorNum = 0;
+
+        for (var i = 0; i < stdOut.length; i += 2) {
+          if (stdOut[startIndex] === separator || testNum === 0) {
+            if (testNum === 0 || testNum === separatorNum + 1) {
+              for (var j = i + 1; j < stdOut.length; j++) {
+                if (stdOut[j] === separator) {
+                  break;
+                }
+              }
+              endIndex = j;
+              if (testNum !== 0) {
+                // Have startIndex skip over the separator and the new line
+                // that follows.
+                startIndex += 2;
+              }
+              if (startIndex >= endIndex) {
+                return [];
+              }
+              return stdOut.slice(startIndex, endIndex);
+            }
+            separatorNum += 1;
+          }
+          startIndex += 2;
+        }
+
+        return [];
+      },
+
+      /**
+       * Returns the corresponding stdOut for given test case number for
+       * server version.
+       *
+       * @param {Array} stdOut Array of entire stdOut for all test cases.
+       * @param {number} testNum Test case number of desired stdOut.
+       * @returns {string}
+       */
+      getTestCaseOutput: function(stdOut, testNum) {
+        var allStdOut = stdOut.split(separator + '\n');
+
+        // No user stdOut.
+        if (allStdOut.length < 1 || stdOut.indexOf(separator) === 0) {
+          return "";
+        }
+        if (testNum >= 0 && testNum < allStdOut.length) {
+          return allStdOut[testNum];
+        }
+
+        return "";
       }
     };
   }
