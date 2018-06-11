@@ -113,7 +113,7 @@ tie.factory('CodeEvalResultObjectFactory', [
       var otherSeparatorStart = otherCode.indexOf('separator =');
 
       // No separator exists in the preprocess code.
-      if (separatorStart == -1 && otherSeparatorStart == -1) {
+      if (separatorStart === -1 && otherSeparatorStart === -1) {
         return this._preprocessedCode === otherCode;
       }
       // Separator values change per run.
