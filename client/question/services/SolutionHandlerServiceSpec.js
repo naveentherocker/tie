@@ -131,7 +131,6 @@ describe('SolutionHandlerService', function() {
           '        return True',
           '    return False'
         ].join('\n');
-
         SolutionHandlerService.processSolutionAsync(
           orderedTasks, starterCode, studentCode,
           auxiliaryCode, 'python'

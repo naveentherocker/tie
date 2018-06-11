@@ -62,13 +62,13 @@ tie.factory('StdOutSeparatorService', [
 
         for (var i = 0; i < stdOut.length; i += 2) {
           if (stdOut[startIndex] === separator || testNum === 0) {
-            if (testNum === 0 || testNum === separatorNum + 1) {
-              for (var j = i + 1; j < stdOut.length; j++) {
-                if (stdOut[j] === separator) {
-                  break;
-                }
+            separatorNum += 1;
+            if (testNum === 0 || testNum === separatorNum) {
+              for (var j = i + 1;
+                j < stdOut.length && stdOut[j] !== separator; j++) {
+                endIndex = j;
               }
-              endIndex = j;
+              endIndex += 1;
               if (testNum !== 0) {
                 // Have startIndex skip over the separator and the new line
                 // that follows.
@@ -79,7 +79,6 @@ tie.factory('StdOutSeparatorService', [
               }
               return stdOut.slice(startIndex, endIndex);
             }
-            separatorNum += 1;
           }
           startIndex += 2;
         }

@@ -22,13 +22,13 @@ tie.factory('PythonCodePreprocessorService', [
   'CLASS_NAME_STUDENT_CODE', 'SYSTEM_CODE', 'VARNAME_OBSERVED_OUTPUTS',
   'VARNAME_MOST_RECENT_INPUT', 'VARNAME_BUGGY_OUTPUT_TEST_RESULTS',
   'VARNAME_PERFORMANCE_TEST_RESULTS', 'VARNAME_TASK_BUGGY_OUTPUT_TEST_RESULTS',
-  'VARNAME_TASK_PERFORMANCE_TEST_RESULTS',
+  'VARNAME_TASK_PERFORMANCE_TEST_RESULTS', 'SEPARATOR_LENGTH',
   function(
       ServerHandlerService, StdOutSeparatorService, CLASS_NAME_AUXILIARY_CODE,
       CLASS_NAME_STUDENT_CODE, SYSTEM_CODE, VARNAME_OBSERVED_OUTPUTS,
       VARNAME_MOST_RECENT_INPUT, VARNAME_BUGGY_OUTPUT_TEST_RESULTS,
       VARNAME_PERFORMANCE_TEST_RESULTS, VARNAME_TASK_BUGGY_OUTPUT_TEST_RESULTS,
-      VARNAME_TASK_PERFORMANCE_TEST_RESULTS) {
+      VARNAME_TASK_PERFORMANCE_TEST_RESULTS, SEPARATOR_LENGTH) {
     /**
      * Used to determine the definition of a function
      * @type {RegExp}
@@ -81,13 +81,6 @@ tie.factory('PythonCodePreprocessorService', [
      * @constant
      */
     var UPPER_BOUND_RATIO_IF_LINEAR = (LARGE_INPUT_SIZE / SMALL_INPUT_SIZE) * 3;
-
-    /**
-    * Used to specify the stdOut separator length.
-    * @type {number}
-    * @constant
-    */
-    var SEPARATOR_LENGTH = 20;
 
     /**
      * This function converts a JSON variable to a Python variable.
@@ -327,19 +320,19 @@ tie.factory('PythonCodePreprocessorService', [
     * @private
     */
     var _generateStringSeparator = function() {
-        var chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
-        var separator = '';
-        for (var i = 0; i < SEPARATOR_LENGTH; i++) {
-          var index = Math.floor(Math.random() * chars.length);
-          separator += chars.charAt(index);
-        }
-        StdOutSeparatorService.setSeparator(separator);
+      var chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
+      var separator = '';
+      for (var i = 0; i < SEPARATOR_LENGTH; i++) {
+        var index = Math.floor(Math.random() * chars.length);
+        separator += chars.charAt(index);
+      }
+      StdOutSeparatorService.setSeparator(separator);
 
-        var separatorCode = [
-          'separator = "' + separator + '"',
-          ''
-        ].join('\n');
-        return separatorCode;
+      var separatorCode = [
+        'separator = "' + separator + '"',
+        ''
+      ].join('\n');
+      return separatorCode;
     };
 
     /**

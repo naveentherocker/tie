@@ -93,11 +93,15 @@ tie.factory('PythonCodeRunnerService', [
         }
 
         // The run was successful.
-        var question = CurrentQuestionService.getCurrentQuestion();
-        var tasks = question.getTasks();
         var codeEvalResult = CodeEvalResultObjectFactory.create(
           code, outputLines.join('\n'), observedOutputs,
           buggyOutputTestResults, performanceTestResults, null, null);
+
+        var question = CurrentQuestionService.getCurrentQuestion();
+        if (!question) {
+          return codeEvalResult;
+        }
+        var tasks = question.getTasks();
         var testToDisplay = codeEvalResult.getIndexOfFirstFailedTest(tasks);
         outputLines = StdOutSeparatorService.getTestCaseOutputInClient(
           outputLines, testToDisplay);
@@ -178,14 +182,17 @@ tie.factory('PythonCodeRunnerService', [
             code, '', [], [], [], errorTraceback,
             responseData[VARNAME_MOST_RECENT_INPUT]);
       } else if (responseData.results) {
-        var question = CurrentQuestionService.getCurrentQuestion();
-        var tasks = question.getTasks();
         var codeEvalResult = CodeEvalResultObjectFactory.create(
            code, responseData.stdout,
            responseData.results[VARNAME_OBSERVED_OUTPUTS],
            responseData.results[VARNAME_BUGGY_OUTPUT_TEST_RESULTS],
            responseData.results[VARNAME_PERFORMANCE_TEST_RESULTS],
            null, null);
+        var question = CurrentQuestionService.getCurrentQuestion();
+        if (!question) {
+          return codeEvalResult;
+        }
+        var tasks = question.getTasks();
         var testToDisplay = codeEvalResult.getIndexOfFirstFailedTest(tasks);
         var stdoutToDisplay = StdOutSeparatorService.getTestCaseOutput(
          responseData.stdout, testToDisplay);

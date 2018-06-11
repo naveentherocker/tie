@@ -18,7 +18,9 @@
  */
 
 tie.factory('CodeEvalResultObjectFactory', [
-  function() {
+  'SEPARATOR_LENGTH',
+  function(
+    SEPARATOR_LENGTH) {
     /**
      * CodeEvalResult stores all of the results for each test and any related
      * errors associated with a given code submission.
@@ -106,8 +108,22 @@ tie.factory('CodeEvalResultObjectFactory', [
      */
     CodeEvalResult.prototype.hasSamePreprocessedCodeAs = function(
         otherCodeEvalResult) {
-      return (
-        this._preprocessedCode === otherCodeEvalResult.getPreprocessedCode());
+      var separatorStart = this._preprocessedCode.indexOf('separator =');
+      var otherCode = otherCodeEvalResult.getPreprocessedCode();
+      var otherSeparatorStart = otherCode.indexOf('separator =');
+
+      // No separator exists in the preprocess code.
+      if (separatorStart == -1 && otherSeparatorStart == -1) {
+        return this._preprocessedCode === otherCode;
+      }
+      // Separator values change per run.
+      var offset = SEPARATOR_LENGTH + 'separator = ""'.length;
+      var separatorLocSame = separatorStart === otherSeparatorStart;
+      var preSeparatorSame = this._preprocessedCode.substring(0,
+        separatorStart) === otherCode.substring(0, separatorStart);
+      var postSeparatorSame = this._preprocessedCode.substring(separatorStart +
+        offset) === otherCode.substring(separatorStart + offset);
+      return separatorLocSame && preSeparatorSame && postSeparatorSame;
     };
 
     /**

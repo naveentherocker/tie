@@ -517,14 +517,14 @@ tie.constant('WRONG_LANGUAGE_ERRORS', {
 tie.constant('SYSTEM_GENERATED_TIPS', {
   python: [{
     // Included a print statement
-    type: 'print',
-    regexString: '\\bprint\\b',
-    message: [
-      'We noticed that you\'re using a print statement within your code. ',
-      'Since you will not be able to use such statements in a technical ',
-      'interview, TIE does not support this feature. We encourage you to ',
-      'instead step through your code by hand.'
-    ].join('')
+    // type: 'print',
+    // regexString: '\\bprint\\b',
+    // message: [
+    //   'We noticed that you\'re using a print statement within your code. ',
+    //   'Since you will not be able to use such statements in a technical ',
+    //   'interview, TIE does not support this feature. We encourage you to ',
+    //   'instead step through your code by hand.'
+    // ].join('')
   }]
 });
 
@@ -723,6 +723,13 @@ tie.constant('SECONDS_TO_MILLISECONDS', 1000);
  * @constant
  */
 tie.constant('CODE_CHANGE_DEBOUNCE_SECONDS', 5);
+
+/** Default user stdOut separator length.
+*
+* @type {number}
+* @constant
+*/
+tie.constant('SEPARATOR_LENGTH', 20);
 
 /**
  * Default time in seconds between calls to SendEventBatch.
